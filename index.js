@@ -4,10 +4,10 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
-const db_URL = process.env.DB_CONNECTION;
-
 async function Connect_MongoDB() {
-  await mongoose.connect(db_URL);
+  await mongoose.connect(
+    "mongodb+srv://krithik-0113:yXLDVYnzRxyKUyBf@cluster0.y8z4nih.mongodb.net/userInfo?retryWrites=true&w=majority&appName=Cluster0"
+  );
   console.log("Database Connected Successfully");
 }
 
