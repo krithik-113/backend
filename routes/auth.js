@@ -54,9 +54,9 @@ router.post("/login", async (req, res) => {
 router.get("/auth", (req, res) => {
    const token = req.headers["authentication"];
    if (token) {
-     jwt.verify(token, process.env.SECRET_KEY, (err, decode) => {
+     jwt.verify(token, "ffdvfejjdf", (err, decode) => {
        if (err) res.json({ auth: false, message: err.message });
-        res.json({ message: decode, auth: true });
+       res.json({ message: decode, auth: true });
      });
    } else {
      res.json({
