@@ -7,7 +7,10 @@ const app = express();
 const db_URL = process.env.DB_CONNECTION;
 
 async function Connect_MongoDB() {
-  await mongoose.connect(db_URL);
+  await mongoose.connect(db_URL, {
+    useNewUrlParser: "true",
+    useUnifiedTopology: "true"
+  });
   console.log("Database Connected Successfully");
 }
 
