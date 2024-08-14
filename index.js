@@ -18,7 +18,7 @@ app.use('/api/details', require('./routes/details'))
 app.use('/api/edit', require('./controllers/EditUser'))
 app.use('/api/delete',require('./controllers/DeleteRecord'))
 
-app.listen(3003,'0.0.0.0', () => {
+app.listen(3003, () => {
   console.log("Server is running in port http://localhost:3003/");
   Connect_MongoDB().catch((err) => console.log(err.message));
 });
