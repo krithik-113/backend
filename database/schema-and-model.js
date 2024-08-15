@@ -24,8 +24,7 @@ const adminSchema = mongoose.Schema(
       required: true,
       default: "user",
     },
-    message: String,
-    userEmail: String,
+    request: [],
     yearsOfExp: {
       type: Number,
       default: 0,

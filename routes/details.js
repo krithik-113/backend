@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const User = require("../database/schema-and-model")
-const {Types} = require('mongoose')
+const { Types } = require('mongoose')
+const {v4 : uuid} = require('uuid')
 
 //  http://localhost:3003/api/details/user/:email
 
@@ -64,8 +65,8 @@ router.put('/userrolechange', async (req, res) => {
     try {
         const user = await User.findOne({ email: userEmail })
         if (user && user.role !== "admin") {
-            const admin = await User.updateOne({ email: adminEmail }, { $set: { message: message,userEmail } })
-            res.json({message:admin})
+            const admin = await User.updateOne({ email: adminEmail }, { $push: { request:{id:uuid(),userEmail,message} } })
+            res.json({request:admin})
         } else {
             res.json({message:"Something went wrong :-("})
         }
@@ -80,8 +81,8 @@ router.get('/rolechange/request/:email', async (req, res) => {
     const {email} = req.params
     try {
         const user = await User.findOne({ email })
-        if (user && user.message) {
-            res.json({message:user.message,userEmail:user.userEmail,id:user._id})
+        if (user && user.request.length) {
+            res.json({ request: user.request });
         } else {
             res.json({message:"No message received...!"})
         }
@@ -90,12 +91,17 @@ router.get('/rolechange/request/:email', async (req, res) => {
     }
 })
 
-//  http://localhost:3003/api/details/msgdelte/:email
-router.put('/msgdelte/:email', async (req, res) => {
+//  http://localhost:3003/api/details/msgdelete/:email
+router.put('/msgdelete/:email', async (req, res) => {
     const { email } = req.params
+    const {id} = req.body
     try {
-        const user = await User.updateOne({ email }, { $set: { message: "", userEmail: "" } })
-        res.json({masgUpdate:user})
+        const admin = await User.findOne({email})
+        if (admin) {
+            const editMsg = admin.request.filter(val => val.id !== id)
+            await User.updateOne({email},{$set:{request:editMsg}})
+        }
+        res.json({message:admin})
     } catch (err){
         console.log(err.message)
     }
