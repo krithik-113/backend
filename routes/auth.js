@@ -16,6 +16,10 @@ router.post("/register", async (req, res) => {
       req.body.password = bcryptPassword;
       console.log(req.body);
       const createUser = new User(req.body);
+      const newUser = await User.find()
+      //  first registering always must be admin
+      newUser.length ? "" : createUser.role = "admin"
+      console.log(newUser)
       await User.create(createUser);
       res.json(req.body);
     } else {
