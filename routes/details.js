@@ -40,7 +40,7 @@ router.put("/user/update/:email", async (req, res) => {
             if (!user) {
               res.json({ messgae: "Somthing went wrong" });
             } else {
-              res.json({ message: "Updated Successfully", data: user });
+             return res.json({ message: "Updated Successfully", data: user });
             }
           } else {
             res.json({
@@ -48,8 +48,14 @@ router.put("/user/update/:email", async (req, res) => {
             });
           }
         });
+      } else {
+          res.json({
+            warning: `No mail received yet to change role as admin`,
+          });
       }
-    } else {
+    }
+    
+    else {
       const user = await User.updateOne(
         { email: userEmail },
         { $set: { role: role } }
