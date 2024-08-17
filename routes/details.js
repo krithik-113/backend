@@ -25,6 +25,7 @@ router.get("/user/:email", async (req, res) => {
 
 //  http://localhost:3003/api/details/user/update/:email
 router.put("/user/update/:email", async (req, res) => {
+    let adminReq = ''
   const { email } = req.params;
   const { role, userEmail } = req.body;
   try {
@@ -33,29 +34,33 @@ router.put("/user/update/:email", async (req, res) => {
       if (admin.request.length) {
         admin.request.forEach(async (val) => {
           if (val.userEmail === userEmail) {
-            const user = await User.updateOne(
-              { email: userEmail },
-              { $set: { role: role } }
-            );
-            if (!user) {
-              res.json({ messgae: "Somthing went wrong" });
-            } else {
-             return res.json({ message: "Updated Successfully", data: user });
-            }
-          } else {
-            res.json({
-              warning: `No mail received yet to change role as admin`,
-            });
-          }
+           adminReq = val.userEmail
+          } 
         });
+          if (adminReq) {
+               const user = await User.updateOne(
+                 { email: userEmail },
+                 { $set: { role: role } }
+               );
+               if (!user) {
+                return res.json({ messgae: "Somthing went wrong" });
+               } else {
+                 return res.json({
+                   message: "Updated Successfully",
+                   data: user,
+                 });
+               }
+          } else {
+               return res.json({
+                 warning: `No mail received yet to change role as admin`,
+               });
+          }
       } else {
-          res.json({
+         return res.json({
             warning: `No mail received yet to change role as admin`,
           });
       }
-    }
-    
-    else {
+    } else {
       const user = await User.updateOne(
         { email: userEmail },
         { $set: { role: role } }
