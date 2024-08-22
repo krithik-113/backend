@@ -6,7 +6,7 @@ const app = express();
 
 async function Connect_MongoDB() {
   await mongoose.connect(
-    "mongodb+srv://krithik-0113:yXLDVYnzRxyKUyBf@cluster0.y8z4nih.mongodb.net/userInfo?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://krithik-0113:cFW3QeW6xk0WupR0@cluster0.y8z4nih.mongodb.net/userInfo?retryWrites=true&w=majority&appName=Cluster0"
   );
   console.log("Database Connected Successfully");
 }
